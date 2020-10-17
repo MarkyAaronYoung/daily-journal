@@ -6,3 +6,6 @@ class Entries():
         self.entry = entry
         self.date = date
         self.moodId = moodId
+
+    def __repr__(self):
+         return f"{self.entry} on date {self.date} I learned {self.concept} and I am {self.moodId}"
