@@ -1,4 +1,5 @@
 from models.entries import Entries
+from models.moods import Moods
 import sqlite3
 import json
 
@@ -14,8 +15,11 @@ def get_all_entries():
             a.concept,
             a.entry,
             a.date,
-            a.moodId
+            a.moodId,
+            m.label label_mood
         FROM entries a
+        JOIN moods m
+            ON m.id = a.moodId
         """)
 
         entries = []
@@ -26,7 +30,8 @@ def get_all_entries():
         for row in dataset:
 
             entry = Entries(row['id'], row['concept'], row['entry'], row['date'], row['moodId'])
-
+            mood = Moods(row['id'], row['label_mood'])
+            entry.mood = mood.__dict__
             entries.append(entry.__dict__)
 
     return json.dumps(entries)
@@ -64,10 +69,8 @@ def delete_entry(id):
         WHERE id = ?
         """, (id, ))
 
-def get_entry_by_query(query):
-    my_query = '%{}%'.format(query)
-
-    with sqlite3.connect('./dailyjournal.db') as conn:
+def get_entry_by_word(q):
+    with sqlite3.connect("./daily-journal.db") as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
@@ -79,17 +82,14 @@ def get_entry_by_query(query):
             a.date,
             a.moodId
         FROM entries a
-        WHERE a.entry LIKE ?
-        """, (my_query,))
+        WHERE a.entry LIKE "%"||?||"%"
+        """, (q, ))
 
         entries = []
-
         dataset = db_cursor.fetchall()
 
         for row in dataset:
-            entry = Entries(row['id'], row['concept'],
-                          row['entry'], row['date'], row['moodId'])
-
+            entry = Entries(row["id"], row["concept"], row["entry"], row["date"], row["moodId"])
             entries.append(entry.__dict__)
 
     return json.dumps(entries)

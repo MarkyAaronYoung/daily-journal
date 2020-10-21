@@ -1,7 +1,7 @@
 import json
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from entries import get_all_entries, get_single_entry, delete_entry, get_entry_by_query
+from entries import get_all_entries, get_single_entry, delete_entry, get_entry_by_word
 from moods import get_all_moods, get_single_mood
 class HandleRequests(BaseHTTPRequestHandler):
     def parse_url(self, path):
@@ -67,7 +67,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if key == "q" and resource == "entries":
                 if value:
-                    response = get_entry_by_query(value)
+                    response = get_entry_by_word(value)
                 else:
                     response = get_all_entries()
 
