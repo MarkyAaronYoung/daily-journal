@@ -1,4 +1,8 @@
-INSERT INTO moods VALUES (1, "Happy");
-INSERT INTO moods VALUES (2, "Sad");
-INSERT INTO moods VALUES (3, "Angry");
-INSERT INTO moods VALUES (4, "OK");
+   SELECT
+            a.id,
+            a.concept,
+            a.entry,
+            a.date,
+            a.moodId
+        FROM entries a
+        WHERE a.entry LIKE "%"||?||"%"
