@@ -1,8 +1,1 @@
-   SELECT
-            a.id,
-            a.concept,
-            a.entry,
-            a.date,
-            a.moodId
-        FROM entries a
-        WHERE a.entry LIKE "%"||?||"%"
+SELECT * FROM entries ORDER BY id DESC;
