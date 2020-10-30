@@ -5,9 +5,7 @@ import json
 def get_all_moods():
     with sqlite3.connect("./daily-journal.db") as conn:
 
-        conn.row_factory =sqlite3.Row
-        db_cursor = conn.cursor()
-
+        conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
         db_cursor.execute("""
